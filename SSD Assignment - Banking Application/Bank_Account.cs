@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Banking_Application
 {
-    public abstract class Bank_Account
-    {
+     internal abstract class Bank_Account
+     {
 
         public String accountNo;
         public String name;
@@ -57,7 +57,7 @@ namespace Banking_Application
             "Town: " + town + "\n" +
             "Balance: " + balance + "\n";
 
-    }
+        }
 
     }
 }

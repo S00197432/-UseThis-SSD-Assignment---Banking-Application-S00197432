@@ -9,7 +9,7 @@ using Microsoft.Data.Sqlite;
 
 namespace Banking_Application
 {
-    public class Data_Access_Layer
+    internal class Data_Access_Layer
     {
 
         private List<Bank_Account> accounts;

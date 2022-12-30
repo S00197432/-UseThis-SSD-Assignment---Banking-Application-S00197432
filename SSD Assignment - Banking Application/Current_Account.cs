@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Banking_Application
 {
-    public class Current_Account: Bank_Account
+    internal class Current_Account: Bank_Account
     {
 
         public double overdraftAmount;

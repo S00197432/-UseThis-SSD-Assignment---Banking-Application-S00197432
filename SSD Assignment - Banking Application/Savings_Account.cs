@@ -6,15 +6,15 @@ using System.Threading.Tasks;
 
 namespace Banking_Application
 {
-    public class Savings_Account: Bank_Account
+    internal class Savings_Account: Bank_Account
     {
 
         public double interestRate;
 
        public Savings_Account(): base()
-        {
+       { 
 
-        }
+       }
         
         public Savings_Account(String name, String address_line_1, String address_line_2, String address_line_3, String town, double balance, double interestRate) : base(name, address_line_1, address_line_2, address_line_3, town, balance)
         {

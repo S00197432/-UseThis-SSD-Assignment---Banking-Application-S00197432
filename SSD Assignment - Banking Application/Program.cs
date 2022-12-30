@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Banking_Application
 {
-    public class Program
+    internal class Program
     {
         public static void Main(string[] args)
         {
@@ -26,7 +27,7 @@ namespace Banking_Application
                 Console.WriteLine("6. Exit");
                 Console.WriteLine("CHOOSE OPTION:");
                 String option = Console.ReadLine();
-                
+                StringBuilder accNo = new StringBuilder();
                 switch(option)
                 {
                     case "1":
@@ -50,33 +51,33 @@ namespace Banking_Application
 
                         } while (!(accountType.Equals("1") || accountType.Equals("2")));
 
-                        String name = "";
+                        StringBuilder name = new StringBuilder();
                         loopCount = 0;
 
                         do
                         {
-
+                            name.Clear();
                             if (loopCount > 0)
                                 Console.WriteLine("INVALID NAME ENTERED - PLEASE TRY AGAIN");
 
                             Console.WriteLine("Enter Name: ");
-                            name = Console.ReadLine();
+                            name.Append(Console.ReadLine());
 
                             loopCount++;
 
                         } while (name.Equals(""));
 
-                        String addressLine1 = "";
+                        StringBuilder addressLine1 = new StringBuilder();
                         loopCount = 0;
 
                         do
                         {
-
+                            addressLine1.Clear();
                             if (loopCount > 0)
                                 Console.WriteLine("INVALID ÀDDRESS LINE 1 ENTERED - PLEASE TRY AGAIN");
 
-                            Console.WriteLine("Enter Address Line 1: ");
-                            addressLine1 = Console.ReadLine();
+                             Console.WriteLine("Enter Address Line 1: ");
+                            addressLine1.Append(Console.ReadLine());
 
                             loopCount++;
 
@@ -88,17 +89,17 @@ namespace Banking_Application
                         Console.WriteLine("Enter Address Line 3: ");
                         String addressLine3 = Console.ReadLine();
 
-                        String town = "";
+                        StringBuilder town = new StringBuilder();
                         loopCount = 0;
 
                         do
                         {
-
+                            town.Clear();
                             if (loopCount > 0)
                                 Console.WriteLine("INVALID TOWN ENTERED - PLEASE TRY AGAIN");
 
                             Console.WriteLine("Enter Town: ");
-                            town = Console.ReadLine();
+                            town.Append(Console.ReadLine());
 
                             loopCount++;
 
@@ -156,7 +157,10 @@ namespace Banking_Application
 
                             } while (overdraftAmount < 0);
 
-                            ba = new Current_Account(name, addressLine1, addressLine2, addressLine3, town, balance, overdraftAmount);
+                            ba = new Current_Account(name.ToString(), addressLine1.ToString(), addressLine2, addressLine3, town.ToString(), balance, overdraftAmount);
+                            name.Clear();
+                            addressLine1.Clear();
+                            town.Clear();
                         }
 
                         else
@@ -185,20 +189,26 @@ namespace Banking_Application
                                 }
 
                             } while (interestRate < 0);
-
-                            ba = new Savings_Account(name, addressLine1, addressLine2, addressLine3, town, balance, interestRate);
+                            
+                            ba = new Savings_Account(name.ToString(), addressLine1.ToString(), addressLine2, addressLine3, town.ToString(), balance, interestRate);
+                            name.Clear();
+                            addressLine1.Clear();
+                            town.Clear();
                         }
 
-                        String accNo = dal.addBankAccount(ba);
-
-                        Console.WriteLine("New Account Number Is: " + accNo);
-
+                        accNo.Append(dal.addBankAccount(ba));
+                       
+                        Console.WriteLine("New Account Number Is: " + accNo.ToString());
+                        accNo.Clear();
                         break;
                     case "2":
-                        Console.WriteLine("Enter Account Number: ");
-                        accNo = Console.ReadLine();
 
-                        ba = dal.findBankAccountByAccNo(accNo);
+                        accNo.Clear();
+
+                        Console.WriteLine("Enter Account Number: ");
+                        accNo.Append(Console.ReadLine());
+                    
+                        ba = dal.findBankAccountByAccNo(accNo.ToString());
 
                         if (ba is null)
                         {
@@ -219,7 +229,8 @@ namespace Banking_Application
                                 switch (ans)
                                 {
                                     case "Y":
-                                    case "y": dal.closeBankAccount(accNo);
+                                    case "y": dal.closeBankAccount(accNo.ToString());
+                                        accNo.Clear();
                                         break;
                                     case "N":
                                     case "n":
@@ -230,14 +241,15 @@ namespace Banking_Application
                                 }
                             } while (!(ans.Equals("Y") || ans.Equals("y") || ans.Equals("N") || ans.Equals("n")));
                         }
-
+                       
                         break;
                     case "3":
+                        accNo.Clear();
                         Console.WriteLine("Enter Account Number: ");
-                        accNo = Console.ReadLine();
+                        accNo.Append(Console.ReadLine());
 
-                        ba = dal.findBankAccountByAccNo(accNo);
-
+                        ba = dal.findBankAccountByAccNo(accNo.ToString());
+                        accNo.Clear();
                         if(ba is null) 
                         {
                             Console.WriteLine("Account Does Not Exist");
@@ -246,15 +258,20 @@ namespace Banking_Application
                         {
                             Console.WriteLine(ba.ToString());
                         }
-
+                       
                         break;
                     case "4": //Lodge
+                        accNo.Clear();
                         Console.WriteLine("Enter Account Number: ");
-                        accNo = Console.ReadLine();
+                        accNo.Append(Console.ReadLine());
 
-                        ba = dal.findBankAccountByAccNo(accNo);
+                        ba = dal.findBankAccountByAccNo(accNo.ToString());
 
-                        if (ba is null)
+                        if (dal.GetType() != typeof (Data_Access_Layer)) //change made(add for bank account in program)
+                        {
+                            Console.WriteLine("ERROR IMPROPER ACCESS!");
+                        }
+                        else if (ba is null)
                         {
                             Console.WriteLine("Account Does Not Exist");
                         }
@@ -284,14 +301,17 @@ namespace Banking_Application
 
                             } while (amountToLodge < 0);
 
-                            dal.lodge(accNo, amountToLodge);
+                            dal.lodge(accNo.ToString(), amountToLodge);
+                            accNo.Clear();
                         }
+                        
                         break;
                     case "5": //Withdraw
+                        accNo.Clear();
                         Console.WriteLine("Enter Account Number: ");
-                        accNo = Console.ReadLine();
+                        accNo.Append(Console.ReadLine());
 
-                        ba = dal.findBankAccountByAccNo(accNo);
+                        ba = dal.findBankAccountByAccNo(accNo.ToString());
 
                         if (ba is null)
                         {
@@ -323,24 +343,27 @@ namespace Banking_Application
 
                             } while (amountToWithdraw < 0);
 
-                            bool withdrawalOK = dal.withdraw(accNo, amountToWithdraw);
-
+                            bool withdrawalOK = dal.withdraw(accNo.ToString(), amountToWithdraw);
+                            accNo.Clear();
                             if(withdrawalOK == false)
                             {
 
                                 Console.WriteLine("Insufficient Funds Available.");
                             }
+                            
                         }
+                        accNo.Clear();
                         break;
                     case "6":
+                        accNo.Clear();
                         running = false;
                         break;
                     default:    
                         Console.WriteLine("INVALID OPTION CHOSEN - PLEASE TRY AGAIN");
                         break;
                 }
-                
-                
+
+                accNo.Clear();
             } while (running != false);
 
         }
