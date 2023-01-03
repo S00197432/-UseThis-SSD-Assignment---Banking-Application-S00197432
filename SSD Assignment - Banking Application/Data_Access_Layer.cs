@@ -140,7 +140,7 @@ namespace Banking_Application
                 command.CommandText =
                 @"
                     INSERT INTO Bank_Accounts VALUES(" +
-                    "'" + En.Encrypt(ba.accountNo) + "', " +
+                    "'" + ba.accountNo + "', " + // if i would encrypy i would do it from here but i cant figure out how to work it
                     "'" + ba.name + "', " +
                     "'" + ba.address_line_1 + "', " +
                     "'" + ba.address_line_2 + "', " +
@@ -171,7 +171,7 @@ namespace Banking_Application
 
         public Bank_Account findBankAccountByAccNo(String accNo) 
         {
-            EncryptDecrypt En = new EncryptDecrypt();
+           
             foreach(Bank_Account ba in accounts)
             {
 

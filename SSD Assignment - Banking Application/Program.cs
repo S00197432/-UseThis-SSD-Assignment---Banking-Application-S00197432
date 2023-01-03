@@ -217,8 +217,8 @@ namespace Banking_Application
                         Console.WriteLine("Enter Account Number: ");
                         accNo.Append(Console.ReadLine());
                         
-                        ba = dal.findBankAccountByAccNo(En.Encrypt(accNo.ToString()));
-                        //d97a372d-30af-4b69-9d8b-bab4565aa7e0
+                        ba = dal.findBankAccountByAccNo(accNo.ToString());
+                       
 
                         if (ba is null)
                         {
