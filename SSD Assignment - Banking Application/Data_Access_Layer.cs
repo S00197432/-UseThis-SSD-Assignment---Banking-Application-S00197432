@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Data.Sqlite;
+using SSD_Assignment___Banking_Application;
 
 namespace Banking_Application
 {
@@ -130,15 +131,16 @@ namespace Banking_Application
                 ba = (Savings_Account)ba;
 
             accounts.Add(ba);
-
+            EncryptDecrypt En = new EncryptDecrypt();
             using (var connection = getDatabaseConnection())
             {
+                
                 connection.Open();
                 var command = connection.CreateCommand();
                 command.CommandText =
                 @"
                     INSERT INTO Bank_Accounts VALUES(" +
-                    "'" + ba.accountNo + "', " +
+                    "'" + En.Encrypt(ba.accountNo) + "', " +
                     "'" + ba.name + "', " +
                     "'" + ba.address_line_1 + "', " +
                     "'" + ba.address_line_2 + "', " +
@@ -162,14 +164,14 @@ namespace Banking_Application
                 command.ExecuteNonQuery();
 
             }
-
+           
             return ba.accountNo;
 
         }
 
         public Bank_Account findBankAccountByAccNo(String accNo) 
-        { 
-        
+        {
+            EncryptDecrypt En = new EncryptDecrypt();
             foreach(Bank_Account ba in accounts)
             {
 

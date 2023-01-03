@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SSD_Assignment___Banking_Application;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,12 +50,13 @@ namespace Banking_Application
         public override String ToString()
         {
 
+            EncryptDecrypt En = new EncryptDecrypt();
             return "\nAccount No: " + accountNo + "\n" +
-            "Name: " + name + "\n" +
-            "Address Line 1: " + address_line_1 + "\n" +
+            "Name: " + En.Decrpyt(name.ToString()).ToString() + "\n" +
+            "Address Line 1: " + En.Decrpyt(address_line_1.ToString()).ToString() + "\n" +
             "Address Line 2: " + address_line_2 + "\n" +
             "Address Line 3: " + address_line_3 + "\n" +
-            "Town: " + town + "\n" +
+            "Town: " + En.Decrpyt(town.ToString()).ToString() + "\n" +
             "Balance: " + balance + "\n";
 
         }

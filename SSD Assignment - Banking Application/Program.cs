@@ -1,4 +1,5 @@
-﻿using System;
+﻿using SSD_Assignment___Banking_Application;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,14 +10,13 @@ namespace Banking_Application
     {
         public static void Main(string[] args)
         {
-            
+            EncryptDecrypt En = new EncryptDecrypt();
             Data_Access_Layer dal = Data_Access_Layer.getInstance();
             dal.loadBankAccounts();
             bool running = true;
 
             do
             {
-
                 Console.WriteLine("");
                 Console.WriteLine("***Banking Application Menu***");
                 Console.WriteLine("1. Add Bank Account");
@@ -74,7 +74,7 @@ namespace Banking_Application
                         {
                             addressLine1.Clear();
                             if (loopCount > 0)
-                                Console.WriteLine("INVALID ÀDDRESS LINE 1 ENTERED - PLEASE TRY AGAIN");
+                                Console.WriteLine("INVALID ADDRESS LINE 1 ENTERED - PLEASE TRY AGAIN");
 
                              Console.WriteLine("Enter Address Line 1: ");
                             addressLine1.Append(Console.ReadLine());
@@ -130,7 +130,7 @@ namespace Banking_Application
                         } while (balance < 0);
 
                         Bank_Account ba;
-
+                   
                         if (Convert.ToInt32(accountType) == Account_Type.Current_Account)
                         {
                             double overdraftAmount = -1;
@@ -157,7 +157,9 @@ namespace Banking_Application
 
                             } while (overdraftAmount < 0);
 
-                            ba = new Current_Account(name.ToString(), addressLine1.ToString(), addressLine2, addressLine3, town.ToString(), balance, overdraftAmount);
+                         
+                            ba = new Current_Account(En.Encrypt(name.ToString()), En.Encrypt(addressLine1.ToString()), addressLine2, addressLine3, En.Encrypt(town.ToString()), balance, overdraftAmount);
+                            
                             name.Clear();
                             addressLine1.Clear();
                             town.Clear();
@@ -165,7 +167,7 @@ namespace Banking_Application
 
                         else
                         {
-
+                            
                             double interestRate = -1;
                             loopCount = 0;
 
@@ -183,14 +185,17 @@ namespace Banking_Application
                                     interestRate = Convert.ToDouble(interestRateString);
                                 }
 
-                                catch
-                                {
+                                 catch
+                                 {
                                     loopCount++;
-                                }
+                                 }
 
                             } while (interestRate < 0);
-                            
-                            ba = new Savings_Account(name.ToString(), addressLine1.ToString(), addressLine2, addressLine3, town.ToString(), balance, interestRate);
+
+                           
+
+                            ba = new Savings_Account(En.Encrypt(name.ToString()), En.Encrypt(addressLine1.ToString()), addressLine2, addressLine3, En.Encrypt(town.ToString()), balance, interestRate);
+
                             name.Clear();
                             addressLine1.Clear();
                             town.Clear();
@@ -199,16 +204,21 @@ namespace Banking_Application
                         accNo.Append(dal.addBankAccount(ba));
                        
                         Console.WriteLine("New Account Number Is: " + accNo.ToString());
+
+                        
+                        En.Encrypt(accNo.ToString());
                         accNo.Clear();
                         break;
+
                     case "2":
 
                         accNo.Clear();
 
                         Console.WriteLine("Enter Account Number: ");
                         accNo.Append(Console.ReadLine());
-                    
-                        ba = dal.findBankAccountByAccNo(accNo.ToString());
+                        
+                        ba = dal.findBankAccountByAccNo(En.Encrypt(accNo.ToString()));
+                        //d97a372d-30af-4b69-9d8b-bab4565aa7e0
 
                         if (ba is null)
                         {
@@ -249,6 +259,7 @@ namespace Banking_Application
                         accNo.Append(Console.ReadLine());
 
                         ba = dal.findBankAccountByAccNo(accNo.ToString());
+
                         accNo.Clear();
                         if(ba is null) 
                         {
@@ -267,7 +278,7 @@ namespace Banking_Application
 
                         ba = dal.findBankAccountByAccNo(accNo.ToString());
 
-                        if (dal.GetType() != typeof (Data_Access_Layer)) //change made(add for bank account in program)
+                        if (dal.GetType() != typeof (Data_Access_Layer)) //change (add for bank account in program)
                         {
                             Console.WriteLine("ERROR IMPROPER ACCESS!");
                         }
@@ -350,7 +361,6 @@ namespace Banking_Application
 
                                 Console.WriteLine("Insufficient Funds Available.");
                             }
-                            
                         }
                         accNo.Clear();
                         break;
@@ -361,6 +371,8 @@ namespace Banking_Application
                     default:    
                         Console.WriteLine("INVALID OPTION CHOSEN - PLEASE TRY AGAIN");
                         break;
+
+                   
                 }
 
                 accNo.Clear();
